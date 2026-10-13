@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reporte de Actividades Semanales | Human Test Center</title>
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#f4f7fb,#0d1420);--surface:light-dark(#fff,#151e2c);--surface2:light-dark(#f8fafc,#1b2636);--text:light-dark(#162033,#eef3f8);--muted:light-dark(#64748b,#9aa9bc);--border:light-dark(#dbe3ed,#2d3a4d);--accent:#2563eb;--accent2:#1d4ed8;--good:#16a34a;--bad:#dc2626}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}button,input,select{font:inherit}.app{min-height:100vh;background:var(--bg)}header{padding:28px clamp(18px,4vw,52px) 20px;border-bottom:1px solid var(--border);background:var(--surface)}.head{max-width:1280px;margin:auto;display:flex;justify-content:space-between;gap:20px;align-items:center}.eyebrow{color:var(--accent);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.12em}h1{margin:5px 0 4px;font-size:clamp(26px,4vw,40px)}.subtitle{color:var(--muted);margin:0}.actions{display:flex;gap:8px;flex-wrap:wrap}button{border:1px solid var(--border);background:var(--surface2);color:var(--text);border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}button.primary{background:var(--accent);border-color:var(--accent);color:white}button:hover{background:var(--accent2);color:white}.wrap{max-width:1280px;margin:auto;padding:24px clamp(18px,4vw,52px)}.toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}.week{font-weight:800;font-size:18px}.filters{display:flex;gap:8px;flex-wrap:wrap}input,select{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:10px 12px;outline:none}input:focus,select:focus{border-color:var(--accent)}.grid{display:grid;grid-template-columns:repeat(7,minmax(170px,1fr));gap:12px;overflow-x:auto;padding-bottom:8px}.day{background:var(--surface);border:1px solid var(--border);border-radius:15px;min-height:300px;overflow:hidden}.dayhead{padding:15px;border-bottom:1px solid var(--border);background:var(--surface2)}.dayname{font-weight:850}.date{font-size:12px;color:var(--muted);margin-top:3px}.tasks{padding:10px}.task{border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:9px;background:var(--surface2)}.tasktime{font-size:11px;color:var(--accent);font-weight:800}.tasktitle{font-weight:700;margin:4px 0;overflow-wrap:anywhere}.taskmeta{font-size:11px;color:var(--muted)}.empty{color:var(--muted);font-size:13px;padding:20px 5px;text-align:center}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}.stat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px}.stat b{display:block;font-size:26px;margin-top:4px}.stat span{font-size:12px;color:var(--muted)}.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px;z-index:10}.modal.show{display:flex}.dialog{width:min(500px,100%);background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px}.dialog h2{margin-top:0}.form{display:grid;gap:12px}.form label{font-size:12px;font-weight:700;color:var(--muted)}.form input,.form select{width:100%;margin-top:5px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.status{padding:10px 12px;border-radius:10px;margin:0 0 14px;font-size:13px;background:var(--surface2);border:1px solid var(--border)}.status.error{border-color:var(--bad);color:var(--bad)}.status.ok{border-color:var(--good)}.auth{max-width:440px;margin:7vh auto;padding:24px;background:var(--surface);border:1px solid var(--border);border-radius:16px}.auth h2{margin-top:0}.auth form{display:grid;gap:12px}.auth label{font-size:13px;color:var(--muted);font-weight:700}.auth input{width:100%;margin-top:5px}.hidden{display:none!important}.signed{font-size:12px;color:var(--muted);align-self:center;overflow-wrap:anywhere}
+@media(max-width:800px){.grid{grid-template-columns:repeat(7,230px)}.stats{grid-template-columns:repeat(2,1fr)}.head{align-items:flex-start;flex-direction:column}}@media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}}
+@media print{body,.app{background:#fff!important;color:#111!important}.actions,#add,#today,.filters,.task button,.modal,.auth,#logout,#refresh{display:none!important}.wrap{max-width:none;padding:10px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible}.day{min-height:0;break-inside:avoid;border:1px solid #bbb;background:#fff!important}.dayhead,.task,.stat{background:#fff!important;color:#111!important}.stats{grid-template-columns:repeat(4,1fr)}header{padding:12px;border-bottom:2px solid #333;background:#fff!important}.subtitle,.taskmeta,.date,.stat span{color:#444!important}button{display:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<header><div class="head"><div><div class="eyebrow">Human Test Center · Área de trabajo</div><h1>TECNOLOGÍA DE LA INFORMACIÓN (TI) Y CIBERSEGURIDAD</h1><p class="subtitle">Actividades semanales para planificar, consultar y controlar el trabajo del área.</p></div><div class="actions"><span id="signedUser" class="signed"></span><button id="logout" class="hidden">Cerrar sesión</button><button id="today" class="hidden">Hoy</button><button id="print" class="hidden">Imprimir / Guardar PDF</button><button id="refresh" class="hidden">Actualizar</button><button id="add" class="primary hidden">+ Nueva actividad</button></div></div></header>
+
+<section id="authPanel" class="auth">
+<h2>Acceso autorizado</h2><p class="subtitle">Inicia sesión con la cuenta que el administrador haya autorizado en Supabase.</p>
+<div id="authMessage" class="status hidden" role="status"></div>
+<form id="loginForm">
+<label>Correo electrónico<input id="email" type="email" autocomplete="username" required placeholder="usuario@empresa.com"></label>
+<label>Contraseña<input id="password" type="password" autocomplete="current-password" required placeholder="Contraseña"></label>
+<button class="primary" type="submit" id="loginButton">Iniciar sesión</button>
+</form>
+<p class="taskmeta">No hay registro público. El administrador debe crear las cuentas desde Supabase.</p>
+</section>
+
+<main class="wrap hidden" id="mainPanel">
+<div id="appMessage" class="status hidden" role="status"></div>
+<div class="toolbar"><div class="week" id="weekLabel">Semana actual</div><div class="filters"><input id="search" placeholder="Buscar actividad…" aria-label="Buscar actividad"><select id="filter"><option value="all">Todos los días</option></select></div></div>
+<section class="stats"><div class="stat"><span>Total de actividades</span><b id="total">0</b></div><div class="stat"><span>Completadas</span><b id="done">0</b></div><div class="stat"><span>Pendientes</span><b id="pending">0</b></div><div class="stat"><span>Progreso semanal</span><b id="progress">0%</b></div></section>
+<section class="grid" id="calendar"></section>
+</main>
+
+<div class="modal" id="modal"><div class="dialog"><h2>Nueva actividad</h2><form class="form" id="form"><div><label>Actividad<input id="title" required maxlength="500" placeholder="Ej. Revisión de inventario"></label></div><div class="row"><label>Día<select id="day"></select></label><label>Hora<input id="time" type="time" value="09:00" required></label></div><div><label>Responsable<input id="owner" maxlength="200" placeholder="Nombre del responsable"></label></div><div class="modal-actions"><button type="button" id="cancel">Cancelar</button><button class="primary" type="submit" id="saveButton">Guardar actividad</button></div></form></div></div>
+</div>
+
+<!-- Supabase JS v2 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/*
+  CONFIGURACIÓN:
+  Reemplaza únicamente estos dos valores por Project URL y Publishable key
+  de TU proyecto Supabase. Nunca pegues aquí una secret/service_role key.
+*/
+const SUPABASE_URL = "https://oadeclnwoqmrusjalmni.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_J0-l8E3Ymkgp-RKJ5qxZfg_BSbK1KFv";
+
+const days=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+let tasks=[];
+let supabaseClient=null;
+let currentUser=null;
+const $=s=>document.querySelector(s);
+const cal=$('#calendar'), search=$('#search'), filter=$('#filter'), modal=$('#modal');
+const authPanel=$('#authPanel'), mainPanel=$('#mainPanel');
+
+function showMessage(target,message,type=''){
+  const el=$(target); el.textContent=message; el.className='status'+(type?' '+type:''); el.classList.remove('hidden');
+}
+function hideMessage(target){$(target).classList.add('hidden');}
+function setBusy(button,busy,label){
+  button.disabled=busy;
+  if(busy) {button.dataset.oldLabel=button.textContent;button.textContent=label;}
+  else {button.textContent=button.dataset.oldLabel||button.textContent;button.disabled=false;}
+}
+function configured(){
+  return SUPABASE_URL.startsWith('https://') &&
+    !SUPABASE_URL.includes('PEGA_AQUI') &&
+    SUPABASE_PUBLISHABLE_KEY.length>20 &&
+    !SUPABASE_PUBLISHABLE_KEY.includes('PEGA_AQUI');
+}
+function showSignedIn(user){
+  currentUser=user;
+  authPanel.classList.add('hidden'); mainPanel.classList.remove('hidden');
+  ['#logout','#today','#print','#refresh','#add'].forEach(s=>$(s).classList.remove('hidden'));
+  $('#signedUser').textContent=user.email||'Sesión autorizada';
+}
+function showSignedOut(){
+  currentUser=null; tasks=[];
+  mainPanel.classList.add('hidden'); authPanel.classList.remove('hidden');
+  ['#logout','#today','#print','#refresh','#add'].forEach(s=>$(s).classList.add('hidden'));
+  $('#signedUser').textContent='';
+  $('#password').value='';
+}
+function friendlyError(error){
+  const m=error?.message||String(error||'Error desconocido');
+  if(/row-level security|permission denied|not allowed/i.test(m))
+    return 'Acceso denegado por las políticas de seguridad. Verifica que este usuario esté autorizado en public.usuarios_autorizados.';
+  if(/invalid login credentials/i.test(m)) return 'Correo o contraseña incorrectos.';
+  return m;
+}
+
+days.forEach((d,i)=>{
+  const o=document.createElement('option');o.value=i;o.textContent=d;filter.appendChild(o);
+  const s=document.createElement('option');s.value=i;s.textContent=d;$('#day').appendChild(s);
+});
+
+function dbToTask(row){
+  const time=(row.hora||'09:00').toString().slice(0,5);
+  return {id:row.id,title:row.titulo||'',day:Number(row.dia),time,owner:row.responsable||'',done:Boolean(row.completada)};
+}
+async function loadTasks(){
+  if(!currentUser)return;
+  showMessage('#appMessage','Cargando actividades…');
+  const {data,error}=await supabaseClient.from('actividades')
+    .select('id,titulo,dia,hora,responsable,completada,creada_en')
+    .order('dia',{ascending:true}).order('hora',{ascending:true});
+  if(error){showMessage('#appMessage','No se pudieron cargar las actividades: '+friendlyError(error),'error');return;}
+  tasks=(data||[]).map(dbToTask);
+  hideMessage('#appMessage');render();
+}
+async function addTask(task){
+  const {data,error}=await supabaseClient.from('actividades').insert({
+    titulo:task.title,dia:task.day,hora:task.time,responsable:task.owner||null,completada:false
+  }).select('id,titulo,dia,hora,responsable,completada,creada_en').single();
+  if(error)throw error;
+  tasks.push(dbToTask(data));render();
+}
+async function setTaskDone(task,done){
+  const {data,error}=await supabaseClient.from('actividades').update({completada:done})
+    .eq('id',task.id).select('id').maybeSingle();
+  if(error)throw error;
+  if(!data)throw new Error('No se actualizó la actividad. Verifica tus permisos.');
+  task.done=done;render();
+}
+async function deleteTask(task){
+  const {data,error}=await supabaseClient.from('actividades').delete().eq('id',task.id).select('id').maybeSingle();
+  if(error)throw error;
+  if(!data)throw new Error('No se eliminó la actividad. Verifica tus permisos.');
+  tasks=tasks.filter(t=>t.id!==task.id);render();
+}
+function render(){
+  const q=search.value.trim().toLowerCase(), f=filter.value;
+  cal.innerHTML='';
+  days.forEach((d,i)=>{
+    if(f!=='all'&&Number(f)!==i)return;
+    const card=document.createElement('article');card.className='day';
+    const head=document.createElement('div');head.className='dayhead';
+    const name=document.createElement('div');name.className='dayname';name.textContent=d;
+    const date=document.createElement('div');date.className='date';date.textContent='Plan semanal';
+    head.append(name,date);
+    const box=document.createElement('div');box.className='tasks';
+    card.append(head,box);
+    const list=tasks.filter(t=>t.day===i&&t.title.toLowerCase().includes(q)).sort((a,b)=>a.time.localeCompare(b.time));
+    if(!list.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='Sin actividades';box.appendChild(empty);}
+    list.forEach(t=>{
+      const el=document.createElement('div');el.className='task';
+      const tm=document.createElement('div');tm.className='tasktime';tm.textContent=t.time;
+      const title=document.createElement('div');title.className='tasktitle';title.textContent=t.title;
+      const owner=document.createElement('div');owner.className='taskmeta';owner.textContent=t.owner||'Sin responsable';
+      const actions=document.createElement('div');actions.style.cssText='display:flex;gap:6px;margin-top:9px;flex-wrap:wrap';
+      const done=document.createElement('button');done.type='button';done.textContent=t.done?'✓ Completada':'Marcar completa';done.style.cssText='padding:5px 8px;font-size:11px';done.dataset.action='done';done.dataset.id=t.id;
+      const del=document.createElement('button');del.type='button';del.textContent='Eliminar';del.style.cssText='padding:5px 8px;font-size:11px';del.dataset.action='delete';del.dataset.id=t.id;
+      actions.append(done,del);el.append(tm,title,owner,actions);box.appendChild(el);
+    });
+    cal.appendChild(card);
+  });
+  updateStats();
+}
+function updateStats(){
+  const total=tasks.length,done=tasks.filter(t=>t.done).length;
+  $('#total').textContent=total;$('#done').textContent=done;$('#pending').textContent=total-done;
+  $('#progress').textContent=total?Math.round(done/total*100)+'%':'0%';
+  $('#weekLabel').textContent='Actividades de la semana';
+}
+
+$('#loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();hideMessage('#authMessage');
+  if(!configured()){showMessage('#authMessage','Primero configura SUPABASE_URL y SUPABASE_PUBLISHABLE_KEY en este archivo.','error');return;}
+  const button=$('#loginButton');setBusy(button,true,'Verificando…');
+  try{
+    const {data,error}=await supabaseClient.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});
+    if(error)throw error;
+    showSignedIn(data.user);await loadTasks();
+  }catch(err){showMessage('#authMessage',friendlyError(err),'error');}
+  finally{setBusy(button,false);}
+});
+$('#logout').addEventListener('click',async()=>{
+  const {error}=await supabaseClient.auth.signOut();
+  if(error){showMessage('#appMessage','No se pudo cerrar sesión: '+friendlyError(error),'error');return;}
+  showSignedOut();hideMessage('#authMessage');
+});
+$('#refresh').addEventListener('click',loadTasks);
+$('#today').addEventListener('click',()=>{filter.value='all';search.value='';render();});
+search.addEventListener('input',render);filter.addEventListener('change',render);
+$('#add').addEventListener('click',()=>{hideMessage('#appMessage');modal.classList.add('show');});
+$('#cancel').addEventListener('click',()=>modal.classList.remove('show'));
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show');});
+$('#print').addEventListener('click',()=>window.print());
+
+cal.addEventListener('click',async e=>{
+  const button=e.target.closest('button[data-action]');if(!button)return;
+  const task=tasks.find(t=>t.id===button.dataset.id);if(!task)return;
+  const original=button.textContent;button.disabled=true;button.textContent='Procesando…';
+  try{
+    hideMessage('#appMessage');
+    if(button.dataset.action==='done')await setTaskDone(task,!task.done);
+    else if(button.dataset.action==='delete'&&confirm('¿Seguro que deseas eliminar esta actividad?'))await deleteTask(task);
+  }catch(err){showMessage('#appMessage','No se pudo guardar el cambio: '+friendlyError(err),'error');}
+  finally{render();}
+});
+$('#form').addEventListener('submit',async e=>{
+  e.preventDefault();if(!currentUser)return;
+  const button=$('#saveButton');setBusy(button,true,'Guardando…');
+  try{
+    await addTask({title:$('#title').value.trim(),day:Number($('#day').value),time:$('#time').value,owner:$('#owner').value.trim(),done:false});
+    e.target.reset();$('#time').value='09:00';modal.classList.remove('show');hideMessage('#appMessage');
+  }catch(err){showMessage('#appMessage','No se pudo guardar la actividad: '+friendlyError(err),'error');}
+  finally{setBusy(button,false);}
+});
+
+(async function init(){
+  if(!configured()){
+    showMessage('#authMessage','Falta configurar la URL y la clave pública de Supabase en el código. No introduzcas contraseñas hasta completar ese paso.','error');
+    return;
+  }
+  if(!window.supabase){showMessage('#authMessage','No se pudo cargar la biblioteca de Supabase. Comprueba tu conexión a internet.','error');return;}
+  supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{
+    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+  });
+  const {data,error}=await supabaseClient.auth.getSession();
+  if(error){showMessage('#authMessage',friendlyError(error),'error');return;}
+  if(data.session){
+    showSignedIn(data.session.user);
+    await loadTasks();
+  }else showSignedOut();
+  supabaseClient.auth.onAuthStateChange((event,session)=>{
+    if(event==='SIGNED_OUT')showSignedOut();
+    else if(session&&!currentUser){showSignedIn(session.user);setTimeout(()=>loadTasks(),0);}
+  });
+})();
+</script>
+</body>
+</html>
